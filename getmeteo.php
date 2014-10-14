@@ -34,6 +34,21 @@ function forecastAsHTML($date,$desc,$icon,$tmax,$tmin) {
 <html>
 	<head>
 		<meta charset="utf-8"/>
+		<style>
+			div {
+				width:150px;
+				height:150px;
+				background-color: yellow;
+				border-color: black;
+				border-style: solid;
+				border-width:2px;
+				border-radius:8px;
+				display:inline-block;
+				margin:2px;
+				padding:2px;
+				
+			}
+		</style>
 	</head>
 	<body>
 		<h1>previsão meteorológica de <?php echo $_GET['location'] ?></h1>
@@ -59,7 +74,18 @@ function forecastAsHTML($date,$desc,$icon,$tmax,$tmin) {
 		echo "<hr/>";
 		
 		echo "<hr/>";
-		echo forecastAsHTML("14-10-2014", "sunny", "http://cdn.worldweatheronline.net/images/wsymbols01_png_64/wsymbol_0001_sunny.png", "33", "12");
+		$forecastArray = $forecastPHP->data->weather;
+		foreach($forecastArray as $forecastDay) {
+			$date = $forecastDay->date;
+			$tmin = $forecastDay->tempMinC;
+			$tmax = $forecastDay->tempMaxC;
+			$desc = $forecastDay->weatherDesc[0]->value;
+			$icon = $forecastDay->weatherIconUrl[0]->value;
+			echo forecastAsHTML($date, $desc, $icon, $tmax, $tmin);
+		}
+		
+		// echo forecastAsHTML("14-10-2014", "sunny", "http://cdn.worldweatheronline.net/images/wsymbols01_png_64/wsymbol_0001_sunny.png", "33", "12");
+		
 		echo "<hr/>";
 		?>
 	</body>
